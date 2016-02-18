@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+ <head>
+  <meta charset="utf-8">
+  <meta name="Author" lang="fr" content="alain marty" />
+  <meta name="Copyright" content="copyleft, GNU GPL" />
+  <title>nanolisp</title>
+  <style> 
+#frame { position:absolute; width:500px; padding:10px; background:#ffe; left:50%; margin-left:-260px; border:1px solid grey; }
+#input { width:100%; height:270px; font:normal 0.8em courier; border:0px solid black; box-shadow:0 0 8px black;  }
+#infos { text-align:center; font:normal 0.8em courier; }
+#output { width:98%; font:normal 1.0em arial; box-shadow:0 0 8px black; background:white; padding:5px; }
+#tests { width:98%; font:normal 0.8em courier; box-shadow:0 0 8px black; background:white; padding:5px; white-space:pre-wrap; }
+h1 {font:bold 6em georgia,times; text-align:center; color:white; text-shadow:0 0 8px black;}
+a {color:grey; text-decoration:none;}
+a:hover {color:red;}
+  </style>
+  <script src="nanolisp.js"></script>
+ </head>
+ <body onload="update()">
+  <div id="frame">
+
+<h1>nanolisp</h1>
+
+<p><b>Nanolisp</b><sup>3</sup> is my smallest version of a Lisp dialect following <a href="http://epsilonwiki.free.fr/alphawiki_2/?view=nanolisp_2">nanolisp<sup>2</sup></a>. It's written in about 150 lines of Javascript, <a href="nanolisp.js">nanolisp.js</a>, with 4 special forms <code> [q,if,def,lambda]</code>, and 68 primitives: [ lib, length, cons, car, cdr, append, list, join, disp, list?, null?, symbol?, lt, gt, =, +, *, -, /, %, abs, acos, asin, atan, ceil, cos, exp, floor, log, random, round, sin, sqrt, tan, min, max, @, div, span, a, ul, ol, li, dl, dt, dd, table, tr, td, h1, h2, h3, h4, h5, h6, p, b, i, u, center, br, hr, blockquote, sup, sub, del, code, img ]</code>. Nanolisp<sup>3</sup> can evaluate a valid code made of HTML tags and maths. See for instance tests given below.</p> 
+<ul> 
+<li><b> Note 1) </b>nanolisp<sup>3</sup> can be embedded in alphawiki, see <a href="http://epsilonwiki.free.fr/alphawiki_2/?view=nanolisp_3">alphawiki</a> and details in <a href="nanolisp.js">nanolisp.js section 3)HTML</a> </li>
+<li><b> Note 2)</b> Currently the code must not contain any parentheses or any of the 68 primitive words, when they are not used for coding purposes. For instance, as in nanolisp<sup>2</sup>, such an expression <code>(b bb)</code> works but <code>(b b)</code> doesn't, because <code>b</code> is a primitive function! Some work to do...</li>
+<li><b> Note 3)</b> Currently, the <code>pre</code> tag doesn't work. Some work to do...</li>
+</ul>
+
+<p><i>Alain Marty | copyleft GPL | updated on 20160218</i></p> 
+
+<h3>1) input</h3>
+<textarea id="input" onkeyup="update()"></textarea>
+<div id="infos"></div>
+
+<h3>2) output</h3>
+<div id="output"></div>
+
+<h3>3) tests</h3>
+<pre id="tests">
+<h4>A) BASICS</h4>
+(h1 welcome in nanolisp)
+(h2 1. Defining)
+(p (q (def hypo (lambda (a b) (sqrt (+ (* a a) (* b b))))))  
+      (def hypo (lambda (a b) (sqrt (+ (* a a) (* b b)))))
+)
+(h2 2. Using)
+(p (q  (hypo 3 4)) > (hypo 3 4) 
+)
+(p (q  (hypo 1 1)) > (hypo 1 1) 
+)
+(img (@ src="http://marty.alain.free.fr/confs/data/mots/mots2/Tree_roots.jpg" width="100%"))
+(div (@ style="font-size:3em; color:red; text-align:center;")Now, it's up to you!)
+
+<h4>B) LISTS</h4>
+(def insert (lambda (x comp l) 
+ (if (null? l) 
+   x 
+   (if (comp x (car l)) 
+        (cons x l) 
+        (cons (car l) (insert x comp (cdr l)))))))
+(br)
+(def sort (lambda (comp l) 
+ (if (null? l) 
+  l 
+  (insert (car l) comp (sort comp (cdr l))))))
+(br)
+(def L (list 11920 63383 45232 79767 8326 17619 62489 87487 97416 42487 8594 3134 14615 29748 55994 67625 2556 442 91652 8855 64123 87894 13252 48939 6840 41749 41244 27719 84843 17407 27255 30052 69025 18457 27757 34112 53346 41087 3401 55901 35901 28866 99050 51163 97000 83948 57292 50081 33356 96423))
+(disp L)
+(br)
+(disp (sort lt L))
+(br)
+(disp (sort gt L))
+
+</pre>
+<p>More examples can be found in <a href="http://epsilonwiki.free.fr/alphawiki_2/?view=nanolisp_2">nanolisp<sup>2</sup></a>.</p>
+</div>
+</body>
+</html>
